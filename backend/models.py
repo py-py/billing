@@ -1,25 +1,51 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
+from backend.settings import DEFAULT_CURRENCY, DEFAULT_DECIMAL_DIGITS, DEFAULT_DECIMAL_PLACES
 
-class Client(models.Model):
+__all__ = ('Customer', 'Contract',
+           'Service', 'ServiceType',
+           'Address', 'StreetType')
+
+
+class Customer(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
+    client = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = _('Клиент')
         verbose_name_plural = _('Клиенты')
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Contract(models.Model):
     number = models.CharField(max_length=7)
-    start = models.DateField(verbose_name=_('Дата начала договора'))
-    finish = models.DateField(verbose_name=_('Дата окончания договора'))
-    client = models.ForeignKey('backend.Client', on_delete=models.PROTECT, related_name='сontracts', verbose_name=_('Клиент'))
+    date_from = models.DateField(verbose_name=_('Дата начала договора'))
+    date_to = models.DateField(verbose_name=_('Дата окончания договора'), blank=True, null=True)
+    executor = models.ForeignKey('backend.Customer', on_delete=models.PROTECT, related_name='executors', verbose_name=_('Исполнитель'))
+    client = models.ForeignKey('backend.Customer', on_delete=models.PROTECT, related_name='clients', verbose_name=_('Заказчик'))
 
     class Meta:
         verbose_name = _('Договор')
         verbose_name_plural = _('Договора')
+
+    def __str__(self):
+        return _(f'Договор №{self.number} от {self.date_from}')
+
+
+class StreetType(models.Model):
+    name = models.CharField(max_length=12)
+    short_name = models.CharField(max_length=4)
+
+    class Meta:
+        verbose_name = _('Тип улицы')
+        verbose_name_plural = _('Типы улиц')
+
+    def __str__(self):
+        return f'{self.short_name}:{self.name}'
 
 
 class Address(models.Model):
@@ -27,22 +53,52 @@ class Address(models.Model):
     region = models.CharField(max_length=255, verbose_name=_('Область'))
     city = models.CharField(max_length=255, verbose_name=_('Город'))
     street_name = models.CharField(max_length=255, verbose_name=_('Улица'))
-    house_number = models.CharField(max_length=255, verbose_name=_('Номер дома'))
-    house_letter = models.CharField(max_length=255, verbose_name=_('Буква дома'), blank=True, default='')
+    street_type = models.ForeignKey('backend.StreetType', on_delete=models.PROTECT, verbose_name=_('Тип улицы'))
+    building_number = models.CharField(max_length=255, verbose_name=_('Номер дома'))
+    building_letter = models.CharField(max_length=255, verbose_name=_('Буква дома'), blank=True, default='')
 
     class Meta:
         verbose_name = _('Адрес')
         verbose_name_plural = _('Адреса')
 
+    def __str__(self):
+        city_address = _(f'обл. {self.region}, м. {self.city}')
+        street_address = _(f'{self.street_type.short_name}. {self.street_name}')
+        building_address = _(f'{self.building_number}{self.building_letter}')
+        return ', '.join((city_address, street_address, building_address))
+
+
+class ServiceType(models.Model):
+    name = models.CharField(max_length=32)
+    price = models.DecimalField(max_digits=DEFAULT_DECIMAL_DIGITS, decimal_places=DEFAULT_DECIMAL_PLACES, verbose_name=_('Цена услуги'))
+
+    class Meta:
+        verbose_name = _('Тип сервисной услуги')
+        verbose_name_plural = _('Типы сервисных услуг')
+
+    def __str__(self):
+        return f'{self.name}({self.price} {DEFAULT_CURRENCY})'
+
 
 class Service(models.Model):
-    contract = models.ForeignKey('backend.Address', on_delete=models.CASCADE, related_name='services', verbose_name=_('Адрес'))
-    name = models.CharField(max_length=255, verbose_name=_('Наименование'))
+    contract = models.ForeignKey('backend.Contract', on_delete=models.CASCADE, related_name='services', verbose_name=_('Договор'))
     address = models.ForeignKey('backend.Address', on_delete=models.PROTECT, related_name='addresses', verbose_name=_('Адрес'))
-    price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name=_('Стоимость'))
-    count = models.PositiveSmallIntegerField(verbose_name=_('Количество услуг'))
+    count = models.PositiveSmallIntegerField(verbose_name=_('Количество услуг'), blank=True, default=1)
+    date_from = models.DateField(verbose_name=_('Дата начала предоставления услуги'), blank=True, null=True)
+    date_to = models.DateField(verbose_name=_('Дата окончания предоставления услуги'), blank=True, null=True)
+    comment = models.CharField(max_length=255, verbose_name=_('Комментарий'), null=True, blank=True)
+
+    type_service = models.ForeignKey('backend.ServiceType', on_delete=models.PROTECT, related_name='services', verbose_name=_('Тип услуги'), null=True, blank=True)
+    price = models.DecimalField(max_digits=DEFAULT_DECIMAL_DIGITS, decimal_places=DEFAULT_DECIMAL_PLACES, verbose_name=_('Цена услуги'), null=True, blank=True)
 
     class Meta:
         verbose_name = _('Услуга')
         verbose_name_plural = _('Услуги')
 
+    def save(self, *args, **kwargs):
+        if not self.date_from:
+            self.date_from = self.contract.date_from
+        super(Service, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self._meta.verbose_name} №{self.pk}({self.address})'

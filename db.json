@@ -1,0 +1,99 @@
+[
+  {
+    "model": "backend.customer",
+    "pk": 1,
+    "fields": {
+      "name": "\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446",
+      "description": "-",
+      "client": false
+    }
+  },
+  {
+    "model": "backend.customer",
+    "pk": 2,
+    "fields": {
+      "name": "\u0417\u0430\u043a\u0430\u0437\u0447\u0438\u043a \u21161",
+      "description": "-",
+      "client": true
+    }
+  },
+  {
+    "model": "backend.customer",
+    "pk": 3,
+    "fields": {
+      "name": "\u0417\u0430\u043a\u0430\u0437\u0447\u0438\u043a \u21162",
+      "description": "-",
+      "client": true
+    }
+  },
+  {
+    "model": "backend.contract",
+    "pk": 1,
+    "fields": {
+      "number": "0802-01",
+      "date_from": "2018-01-01",
+      "date_to": null,
+      "executor": 1,
+      "client": 2
+    }
+  },
+  {
+    "model": "backend.streettype",
+    "pk": 1,
+    "fields": {
+      "name": "\u0432\u0443\u043b\u0438\u0446\u044f",
+      "short_name": "\u0432\u0443\u043b"
+    }
+  },
+  {
+    "model": "backend.streettype",
+    "pk": 2,
+    "fields": {
+      "name": "\u043f\u0440\u043e\u0432\u0443\u043b\u043e\u043a",
+      "short_name": "\u043f\u0440\u043e\u0432"
+    }
+  },
+  {
+    "model": "backend.address",
+    "pk": 1,
+    "fields": {
+      "country": "\u0423\u043a\u0440\u0430\u0457\u043d\u0430",
+      "region": "\u041a\u0438\u0457\u0432\u0441\u044c\u043a\u0430",
+      "city": "\u041a\u0438\u0457\u0432",
+      "street_name": "\u0412\u0435\u043b\u0438\u043a\u0430 \u0412\u0430\u0441\u0438\u043b\u044c\u043a\u0456\u0432\u0441\u044c\u043a\u0430",
+      "street_type": 1,
+      "building_number": "104",
+      "building_letter": "\u0430"
+    }
+  },
+  {
+    "model": "backend.servicetype",
+    "pk": 1,
+    "fields": {
+      "name": "\u0410\u0422\u041c",
+      "price": "240.00"
+    }
+  },
+  {
+    "model": "backend.servicetype",
+    "pk": 2,
+    "fields": {
+      "name": "\u0422\u0421\u041e",
+      "price": "320.00"
+    }
+  },
+  {
+    "model": "backend.service",
+    "pk": 1,
+    "fields": {
+      "contract": 1,
+      "address": 1,
+      "count": 1,
+      "date_from": null,
+      "date_to": null,
+      "comment": null,
+      "type_service": 1,
+      "price": null
+    }
+  }
+]

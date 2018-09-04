@@ -1,0 +1,6 @@
+# Created by ruslan_valeev at 04/09/18
+
+
+DEFAULT_CURRENCY = 'грн.'
+DEFAULT_DECIMAL_DIGITS = 7
+DEFAULT_DECIMAL_PLACES = 2
