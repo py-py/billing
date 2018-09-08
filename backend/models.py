@@ -18,7 +18,7 @@ class Customer(models.Model):
         verbose_name_plural = _('Клиенты')
 
     def __str__(self):
-        return f'{self.name}'
+        return _('{self.name}'.format(self=self))
 
 
 class Contract(models.Model):
@@ -33,7 +33,7 @@ class Contract(models.Model):
         verbose_name_plural = _('Договора')
 
     def __str__(self):
-        return _(f'Договор №{self.number} от {self.date_from}')
+        return _('Договор №{self.number} от {self.date_from}'.format(self=self))
 
 
 class StreetType(models.Model):
@@ -45,7 +45,7 @@ class StreetType(models.Model):
         verbose_name_plural = _('Типы улиц')
 
     def __str__(self):
-        return f'{self.short_name}:{self.name}'
+        return _('{self.short_name}:{self.name}'.format(self=self))
 
 
 class Address(models.Model):
@@ -62,9 +62,9 @@ class Address(models.Model):
         verbose_name_plural = _('Адреса')
 
     def __str__(self):
-        city_address = _(f'обл. {self.region}, м. {self.city}')
-        street_address = _(f'{self.street_type.short_name}. {self.street_name}')
-        building_address = _(f'{self.building_number}{self.building_letter}')
+        city_address = _('обл. {self.region}, м. {self.city}'.format(self=self))
+        street_address = _('{self.street_type.short_name}. {self.street_name}'.format(self=self))
+        building_address = _('{self.building_number}{self.building_letter}'.format(self=self))
         return ', '.join((city_address, street_address, building_address))
 
 
@@ -77,7 +77,7 @@ class ServiceType(models.Model):
         verbose_name_plural = _('Типы сервисных услуг')
 
     def __str__(self):
-        return f'{self.name}({self.price} {DEFAULT_CURRENCY})'
+        return _('{self.name}({self.price} {DEFAULT_CURRENCY})'.format(self=self, DEFAULT_CURRENCY=DEFAULT_CURRENCY))
 
 
 class Service(models.Model):
@@ -101,4 +101,4 @@ class Service(models.Model):
         super(Service, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self._meta.verbose_name} №{self.pk}({self.address})'
+        return _('{self._meta.verbose_name} №{self.pk}({self.address})'.format(self=self))
