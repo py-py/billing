@@ -8,7 +8,14 @@ __all__ = ('Customer', 'Contract',
            'Address', 'StreetType')
 
 
-class Customer(models.Model):
+class GroupMixin(models.Model):
+    group = models.ForeignKey('auth.Group', null=True, related_name="%(class)s", on_delete=models.CASCADE, verbose_name=_('Группа'))
+
+    class Meta:
+        abstract = True
+    
+
+class Customer(GroupMixin):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     client = models.BooleanField(default=True)
@@ -21,7 +28,7 @@ class Customer(models.Model):
         return _('{self.name}'.format(self=self))
 
 
-class Contract(models.Model):
+class Contract(GroupMixin):
     number = models.CharField(max_length=7)
     date_from = models.DateField(verbose_name=_('Дата начала договора'))
     date_to = models.DateField(verbose_name=_('Дата окончания договора'), blank=True, null=True)
@@ -36,7 +43,7 @@ class Contract(models.Model):
         return _('Договор №{self.number} от {self.date_from}'.format(self=self))
 
 
-class StreetType(models.Model):
+class StreetType(GroupMixin):
     name = models.CharField(max_length=12)
     short_name = models.CharField(max_length=4)
 
@@ -48,7 +55,7 @@ class StreetType(models.Model):
         return _('{self.short_name}:{self.name}'.format(self=self))
 
 
-class Address(models.Model):
+class Address(GroupMixin):
     country = models.CharField(max_length=255, verbose_name=_('Страна'))
     region = models.CharField(max_length=255, verbose_name=_('Область'))
     city = models.CharField(max_length=255, verbose_name=_('Город'))
@@ -68,7 +75,7 @@ class Address(models.Model):
         return ', '.join((city_address, street_address, building_address))
 
 
-class ServiceType(models.Model):
+class ServiceType(GroupMixin):
     name = models.CharField(max_length=32)
     price = models.DecimalField(max_digits=DEFAULT_DECIMAL_DIGITS, decimal_places=DEFAULT_DECIMAL_PLACES, verbose_name=_('Цена услуги'))
 
@@ -80,7 +87,7 @@ class ServiceType(models.Model):
         return _('{self.name}({self.price} {DEFAULT_CURRENCY})'.format(self=self, DEFAULT_CURRENCY=DEFAULT_CURRENCY))
 
 
-class Service(models.Model):
+class Service(GroupMixin):
     contract = models.ForeignKey('backend.Contract', on_delete=models.CASCADE, related_name='services', verbose_name=_('Договор'))
     address = models.ForeignKey('backend.Address', on_delete=models.PROTECT, related_name='addresses', verbose_name=_('Адрес'))
     count = models.PositiveSmallIntegerField(verbose_name=_('Количество услуг'), blank=True, default=1)
