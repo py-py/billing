@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 
 from backend.decorators import contract_permission_required
 from backend.models import Contract
+from backend.utils import calculate_vat, calculate_price_without_vat
 
 __all__ = ('InvoiceView', )
 
@@ -27,5 +28,10 @@ class InvoiceView(views.View):
         context['contract'] = contract
         context['invoice_number'] = '{contract.number}/{year}/{month}'\
             .format(contract=contract, year=year, month=month)
+        context['services'] = contract.get_service_values()
+
+        context['sum'] = contract.get_service_sum()
+        context['vat'] = calculate_vat(context['sum'])
+        context['price_without_vat'] = calculate_price_without_vat(context['sum'])
 
         return render(request, 'billing/invoice.html', context)

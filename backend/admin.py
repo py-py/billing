@@ -25,7 +25,7 @@ class BaseGroupAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-class CustomerAdmin(BaseGroupAdmin):
+class CompanyAdmin(BaseGroupAdmin):
     pass
 
 
@@ -65,7 +65,7 @@ class ServiceTypeAdmin(BaseGroupAdmin):
     pass
 
 
-admin.site.register(Customer, CustomerAdmin)
+admin.site.register(Company, CompanyAdmin)
 admin.site.register(Contract, ContractAdmin)
 
 admin.site.register(Address, AddressAdmin)
