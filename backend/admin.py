@@ -29,6 +29,10 @@ class CompanyAdmin(BaseGroupAdmin):
     pass
 
 
+class LegacyEntityAdmin(BaseGroupAdmin):
+    pass
+
+
 class ContractAdmin(BaseGroupAdmin):
     actions = ('get_invoice', )
 
@@ -66,6 +70,7 @@ class ServiceTypeAdmin(BaseGroupAdmin):
 
 
 admin.site.register(Company, CompanyAdmin)
+admin.site.register(LegacyEntity, LegacyEntityAdmin)
 admin.site.register(Contract, ContractAdmin)
 
 admin.site.register(Address, AddressAdmin)

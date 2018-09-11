@@ -28,7 +28,7 @@ class InvoiceView(views.View):
         context['contract'] = contract
         context['invoice_number'] = '{contract.number}/{year}/{month}'\
             .format(contract=contract, year=year, month=month)
-        context['services'] = contract.get_service_values()
+        context['services'] = contract.get_service_values(month=month, year=year)
 
         context['sum'] = contract.get_service_sum()
         context['vat'] = calculate_vat(context['sum'])

@@ -13,8 +13,8 @@ class Company(GroupMixin):
     legacy_entity = models.ForeignKey('backend.LegacyEntity', on_delete=models.CASCADE, related_name='entities', verbose_name=_('Юридическое лицо'))
 
     class Meta:
-        verbose_name = _('Клиент')
-        verbose_name_plural = _('Клиенты')
+        verbose_name = _('Компания')
+        verbose_name_plural = _('Компании')
 
     def __str__(self):
         return _('{self.name}'.format(self=self))
@@ -25,6 +25,10 @@ class LegacyEntity(GroupMixin):
     last_name = models.CharField(max_length=32)
     patronymic = models.CharField(max_length=32)
     document = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = _('Юридическое лицо')
+        verbose_name_plural = _('Юридические лица')
 
     def get_full_name(self):
         return '{self.last_name} {self.first_name} {self.patronymic}'.format(self=self)
