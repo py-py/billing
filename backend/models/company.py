@@ -20,7 +20,7 @@ class LegacyEntity(GroupMixin):
         return '{self.last_name} {self.first_name} {self.patronymic}'.format(self=self)
 
     def get_short_name(self):
-        return '{self.last_name} {self.first_name[0]}.{self.patronymic[0]}'.format(self=self)
+        return '{self.last_name} {self.first_name[0]}.{self.patronymic[0]}.'.format(self=self)
 
     def __str__(self):
         return self.get_short_name()
