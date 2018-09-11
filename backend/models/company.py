@@ -30,7 +30,7 @@ class Company(GroupMixin):
     name = models.CharField(max_length=255, verbose_name=_('Наименование компании'))
     description = models.CharField(max_length=255, verbose_name=_('Деталировка компании'))
     client = models.BooleanField(default=True, verbose_name=_('Клиент'))
-    legacy_entity = models.ForeignKey('backend.LegacyEntityInvoice', on_delete=models.CASCADE, related_name='entities', verbose_name=_('Юридическое лицо'))
+    legacy_entity = models.ForeignKey('backend.LegacyEntity', on_delete=models.CASCADE, related_name='entities', verbose_name=_('Юридическое лицо'))
 
     class Meta:
         verbose_name = _('Компания')
