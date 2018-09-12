@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
+from django.contrib.auth.models import User, Group
 from django.utils.translation import gettext as _
 
 
@@ -10,3 +12,6 @@ class InvoiceAdminSite(admin.AdminSite):
 
 
 invoice_admin = InvoiceAdminSite(name='invoice_admin')
+
+invoice_admin.register(User, UserAdmin)
+invoice_admin.register(Group, GroupAdmin)

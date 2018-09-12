@@ -7,9 +7,9 @@ __all__ = ('Address', 'StreetType', )
 
 
 class Address(GroupMixin):
-    country = models.CharField(max_length=255, verbose_name=_('Страна'))
-    region = models.CharField(max_length=255, verbose_name=_('Область'))
-    city = models.CharField(max_length=255, verbose_name=_('Город'))
+    country = models.CharField(max_length=255, verbose_name=_('Страна'), default=_('Україна'))
+    region = models.CharField(max_length=255, verbose_name=_('Область'), default=_('Київська'))
+    city = models.CharField(max_length=255, verbose_name=_('Город'), default=_('Київ'))
     street_name = models.CharField(max_length=255, verbose_name=_('Улица'))
     street_type = models.ForeignKey('backend.StreetType', on_delete=models.PROTECT, verbose_name=_('Тип улицы'))
     building_number = models.CharField(max_length=255, verbose_name=_('Номер дома'))
