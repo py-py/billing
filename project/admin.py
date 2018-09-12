@@ -13,5 +13,13 @@ class InvoiceAdminSite(admin.AdminSite):
 
 invoice_admin = InvoiceAdminSite(name='invoice_admin')
 
-invoice_admin.register(User, UserAdmin)
+
+class CustomUserAdmin(UserAdmin):
+    def save_model(self, request, obj, form, change):
+        if not getattr(obj, 'pk'):
+            obj.create_user_group = True
+        super(CustomUserAdmin, self).save_model(request, obj, form, change)
+
+
+invoice_admin.register(User, CustomUserAdmin)
 invoice_admin.register(Group, GroupAdmin)
