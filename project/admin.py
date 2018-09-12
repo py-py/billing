@@ -1,11 +1,12 @@
 from django.contrib import admin
+from django.utils.translation import gettext as _
 
 
 class InvoiceAdminSite(admin.AdminSite):
-    site_header = 'Invoice panel'
-    site_title = 'Invoice'
-    site_url = None
-    index_title = 'Invoice panel'
+    site_title = _('Invoice Admin Site')
+    site_header = _('Invoice administration')
+    index_title = _('Invoice administration')
+    site_url = '/'
 
 
-invoice_admin = InvoiceAdminSite()
+invoice_admin = InvoiceAdminSite(name='invoice_admin')

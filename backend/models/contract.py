@@ -10,10 +10,8 @@ class Contract(GroupMixin):
     number = models.CharField(max_length=7)
     date_from = models.DateField(verbose_name=_('Дата начала договора'))
     date_to = models.DateField(verbose_name=_('Дата окончания договора'), blank=True, null=True)
-    executor = models.ForeignKey('backend.Company', on_delete=models.PROTECT, related_name='executors',
-                                 verbose_name=_('Исполнитель'))
-    client = models.ForeignKey('backend.Company', on_delete=models.PROTECT, related_name='clients',
-                               verbose_name=_('Заказчик'))
+    executor = models.ForeignKey('backend.Company', on_delete=models.PROTECT, related_name='executors', verbose_name=_('Исполнитель'))
+    client = models.ForeignKey('backend.Company', on_delete=models.PROTECT, related_name='clients', verbose_name=_('Заказчик'))
 
     class Meta:
         verbose_name = _('Договор')
