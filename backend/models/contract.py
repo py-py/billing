@@ -32,7 +32,7 @@ class Contract(GroupMixin):
                  'price_full': s.price_full} for s in query]
 
     def get_service_sum(self):
-        return sum(s.price for s in self.services.all())
+        return sum(s.price_full for s in self.services.all())
 
     def __str__(self):
         return _('Договор №{self.number} от {self.date_from}'.format(self=self))
