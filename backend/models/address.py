@@ -20,10 +20,11 @@ class Address(GroupMixin):
         verbose_name_plural = _('Адреса')
 
     def __str__(self):
-        city_address = _('обл. {self.region}, м. {self.city}'.format(self=self))
+        region_address = _('обл. {self.region}'.format(self=self))
+        city_address = _('м. {self.city}'.format(self=self))
         street_address = _('{self.street_type.short_name}. {self.street_name}'.format(self=self))
         building_address = _('{self.building_number}{self.building_letter}'.format(self=self))
-        return ', '.join((city_address, street_address, building_address))
+        return ', '.join((region_address, city_address, street_address, building_address))
 
 
 class StreetType(GroupMixin):
