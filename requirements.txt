@@ -1,4 +1,5 @@
 Django==2.1.1
+djangorestframework==3.8.2
 num2words==0.5.7
 pkg-resources==0.0.0
 pytz==2018.5
